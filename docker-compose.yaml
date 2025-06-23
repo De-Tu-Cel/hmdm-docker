@@ -38,8 +38,6 @@ services:
     image: headwindmdm/hmdm:0.1.5
     expose:
       - "8080"
-      - "8443"
-      - "31000"
     volumes:
       - ./volumes/work:/usr/local/tomcat/work
       - ./volumes/letsencrypt:/etc/letsencrypt
