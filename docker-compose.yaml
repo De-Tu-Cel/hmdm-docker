@@ -14,18 +14,18 @@ services:
   # 2. Uncomment the port 80 forwarding
   # 3. Set the environment variable in the .env file: PROTOCOL=http
   # 
-  certbot:
-    image: certbot/certbot:v1.4.0
-    volumes:
-      - ./volumes/letsencrypt:/etc/letsencrypt
-    expose: 
-      - 80:80
-    entrypoint: "certbot certonly --non-interactive --agree-tos -m ${ADMIN_EMAIL} --standalone -d ${BASE_DOMAIN}"
+  # certbot:
+  #   image: certbot/certbot:v1.4.0
+  #  volumes:
+  #    - ./volumes/letsencrypt:/etc/letsencrypt
+  #  expose: 
+  #    - 80:80
+  #  entrypoint: "certbot certonly --non-interactive --agree-tos -m ${ADMIN_EMAIL} --standalone -d ${BASE_DOMAIN}"
 
   postgresql:
     image: postgres:12-alpine
     expose:
-      - 5432:5432
+      - 6432:6432
     environment:
       POSTGRES_USER: ${SQL_USER}
       POSTGRES_PASSWORD: ${SQL_PASS}
@@ -36,10 +36,9 @@ services:
   hmdm:
     image: headwindmdm/hmdm:0.1.5
     expose:
-      # Uncomment this port forwarding if you want to use plain HTTP instead of HTTPS
-      #- 80:8080
-      - 443:8443
-      - 31000:31000
+      - "8080"
+      - "443"
+      - "31000"
     volumes:
       - ./volumes/work:/usr/local/tomcat/work
       - ./volumes/letsencrypt:/etc/letsencrypt
