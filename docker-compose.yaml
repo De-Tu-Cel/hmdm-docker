@@ -22,21 +22,30 @@ services:
 
   postgresql:
     image: postgres:12-alpine
-    ports: []
     environment:
       POSTGRES_USER: ${SQL_USER}
       POSTGRES_PASSWORD: ${SQL_PASS}
       POSTGRES_DB: ${SQL_BASE}
     volumes:
-      - ./volumes/db:/var/lib/postgresql/data
-
+      - type: bind
+        source: ./volumes/db
+        target: /var/lib/postgresql/data
+        is_directory: true
   hmdm:
     image: headwindmdm/hmdm:0.1.5
-    ports: []
     volumes:
       - ./volumes/work:/usr/local/tomcat/work
       - ./volumes/letsencrypt:/etc/letsencrypt
       - ./volumes/hmdm-config:/usr/local/tomcat/conf/Catalina/localhost
+    expose:
+      - "8080"
+    labels:
+      - traefik.enable=true
+      - "traefik.http.routers.hmdm.rule=Host(`hmdm.detucel.com`)"
+      - "traefik.http.routers.hmdm.entrypoints=http"
+      - "traefik.http.services.hmdm.loadbalancer.server.port=8080"
+      - "traefik.http.middlewares.hmdm-nocache.headers.customResponseHeaders.Cache-Control=no-cache, no-store, max-age=0, must-revalidate"
+      - "traefik.http.routers.hmdm.middlewares=hmdm-nocache@docker"
     environment:
       SQL_HOST: postgresql
       SQL_USER: ${SQL_USER}
