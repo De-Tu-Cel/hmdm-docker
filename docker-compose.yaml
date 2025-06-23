@@ -22,8 +22,7 @@ services:
 
   postgresql:
     image: postgres:12-alpine
-    ports:
-      - 6432:6432
+    ports: []
     environment:
       POSTGRES_USER: ${SQL_USER}
       POSTGRES_PASSWORD: ${SQL_PASS}
@@ -33,11 +32,7 @@ services:
 
   hmdm:
     image: headwindmdm/hmdm:0.1.5
-    ports:
-      # Uncomment this port forwarding if you want to use plain HTTP instead of HTTPS
-      - 8080:8080
-      - 443:8443
-      - 31000:31000
+    ports: []
     volumes:
       - ./volumes/work:/usr/local/tomcat/work
       - ./volumes/letsencrypt:/etc/letsencrypt
