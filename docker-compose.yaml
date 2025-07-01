@@ -40,7 +40,7 @@ services:
       FORCE_RECONFIGURE: ${FORCE_RECONFIGURE}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.hmdm.rule=Host(${BASE_DOMAIN})"
+      - "traefik.http.routers.hmdm.rule=Host(`${BASE_DOMAIN}`)"
       - "traefik.http.routers.hmdm.entrypoints=websecure"
       - "traefik.http.routers.hmdm.tls.certresolver=letsencrypt"
       - "traefik.http.services.hmdm.loadbalancer.server.port=8080"
